@@ -51,7 +51,9 @@ namespace Tienda_Online.Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Precio = table.Column<double>(type: "float", nullable: false)
+                    Precio = table.Column<double>(type: "float", nullable: false),
+                    NombreFoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Foto = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

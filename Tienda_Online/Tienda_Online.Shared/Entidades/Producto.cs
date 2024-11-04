@@ -16,6 +16,12 @@ namespace Tienda_Online.Shared.Entidades
         [Display(Name = "Precio Producto")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public double Precio { get; set; } = 0!;
+        public string NombreFoto { get; set; } = null!;
+
+        [Display(Name = "Foto Producto")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public string Foto { get; set; } = null!;
+
         [JsonIgnore]
         public ICollection<PromocionProducto>? Promociones { get; set; }
         [JsonIgnore]

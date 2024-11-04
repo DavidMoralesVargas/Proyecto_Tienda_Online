@@ -10,10 +10,13 @@ namespace Tienda_Online.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public double PrecioOferta { get; set; } = 0!;
 
-       
         public int ProductoId { get; set; }
         [JsonIgnore]
         public Producto? Producto { get; set; }
+
+        [Display(Name = "Precio Antiguo Producto")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
+        public double PrecioAntiguo => Producto?.Precio?? 0.0;
 
     }
 }

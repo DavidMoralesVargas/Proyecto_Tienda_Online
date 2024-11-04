@@ -14,8 +14,9 @@ builder.Services.AddSwaggerGen();
 //Conexión a la base de datos
 builder.Services.AddDbContext<DataContext>(x=>x.UseSqlServer("name=DockerConnection"));
 
-//Inyectamos las clases ´de los servicios
+//Inyectamos las clases de los servicios
 builder.Services.AddScoped<clsProducto>();
+builder.Services.AddScoped<clsPromocionProducto>();
 
 var app = builder.Build();
 
@@ -25,6 +26,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(x => x
+   .AllowAnyMethod()
+   .AllowAnyHeader()
+   .SetIsOriginAllowed(origin => true)
+   .AllowCredentials());
 
 app.UseHttpsRedirection();
 

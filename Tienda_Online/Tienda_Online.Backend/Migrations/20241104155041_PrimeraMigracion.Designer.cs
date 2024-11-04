@@ -12,7 +12,7 @@ using Tienda_Online.Backend.Data;
 namespace Tienda_Online.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241022215015_PrimeraMigracion")]
+    [Migration("20241104155041_PrimeraMigracion")]
     partial class PrimeraMigracion
     {
         /// <inheritdoc />
@@ -111,9 +111,17 @@ namespace Tienda_Online.Backend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Foto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NombreFoto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Precio")
                         .HasColumnType("float");
