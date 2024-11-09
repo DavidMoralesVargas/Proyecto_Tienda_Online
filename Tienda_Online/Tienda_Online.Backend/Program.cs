@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(x=>x.UseSqlServer("name=DockerConnect
 //Inyectamos las clases de los servicios
 builder.Services.AddScoped<clsProducto>();
 builder.Services.AddScoped<clsPromocionProducto>();
+builder.Services.AddScoped<clsCarritoCompra>();
 
 var app = builder.Build();
 

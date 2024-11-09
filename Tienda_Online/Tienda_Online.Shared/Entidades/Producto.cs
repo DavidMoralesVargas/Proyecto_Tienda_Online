@@ -19,7 +19,6 @@ namespace Tienda_Online.Shared.Entidades
         public string NombreFoto { get; set; } = null!;
 
         [Display(Name = "Foto Producto")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Foto { get; set; } = null!;
 
         [JsonIgnore]

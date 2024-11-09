@@ -12,7 +12,7 @@ using Tienda_Online.Backend.Data;
 namespace Tienda_Online.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241104155041_PrimeraMigracion")]
+    [Migration("20241109185717_PrimeraMigracion")]
     partial class PrimeraMigracion
     {
         /// <inheritdoc />

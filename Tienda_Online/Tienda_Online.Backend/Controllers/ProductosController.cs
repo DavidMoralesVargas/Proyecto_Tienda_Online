@@ -16,8 +16,8 @@ namespace Tienda_Online.Backend.Controllers
             _clsProducto = clsProducto;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CrearProducto(Producto producto)
+        [HttpPost("CrearProducto")]
+        public async Task<IActionResult> CrearProducto(Producto producto)
         {
            var _producto = await _clsProducto.CrearProducto(producto);
             if (_producto.Exitoso)
@@ -28,7 +28,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ObtenerListaProducto([FromQuery] PaginacionDTO paginacion)
+        public async Task<IActionResult> ObtenerListaProducto([FromQuery] PaginacionDTO paginacion)
         {
             var _productos = await _clsProducto.ObtenerListaProducto(paginacion);
             if (_productos.Exitoso)
@@ -39,7 +39,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet("ObtenerTotalPaginas")]
-        public async Task<ActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
+        public async Task<IActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
         {
             var _paginas = await _clsProducto.ObtenerTotalPaginas(paginacion);
             if (_paginas.Exitoso)
@@ -50,7 +50,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> BuscarProducto(int id)
+        public async Task<IActionResult> BuscarProducto(int id)
         {
             var _producto = await _clsProducto.BuscarProducto(id);
             if (_producto.Exitoso)
@@ -60,8 +60,8 @@ namespace Tienda_Online.Backend.Controllers
             return NotFound();  
         }
 
-        [HttpPut]
-        public async Task<ActionResult> ActualizarProducto(Producto producto)
+        [HttpPut("ActualizarProducto")]
+        public async Task<IActionResult> ActualizarProducto(Producto producto)
         {
             var _producto = await _clsProducto.ActualizarProducto(producto);
             if (_producto.Exitoso)
@@ -72,7 +72,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> EliminarProducto(int id)
+        public async Task<IActionResult> EliminarProducto(int id)
         {
             var _producto = await _clsProducto.EliminarProducto(id);
             if (_producto.Exitoso)

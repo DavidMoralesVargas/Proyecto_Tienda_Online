@@ -1,0 +1,37 @@
+﻿@page "/carritocompra"
+
+<h1>Carrito de Compra:</h1>
+
+<GenericList MyList="CarritoConProducto">
+    <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Producto</th>
+                        <th></th>
+                        <th></th>
+                        <th>Cantidad</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var carrito in CarritoConProducto!)
+                {
+
+                    <tr>
+                        <th><img class="img-fluid" style="width: 100px; height: 100px;" src="@carrito.FotoProducto" /></th>
+                        <th>@carrito.NombreProducto</th>
+                        <th>@carrito.PrecioTotal</th>
+                        <th><button>-</button></th>
+                        <th>@carrito.CantidadProductos</th>
+                        <th><button>+</button></th>
+                        <th><button class="btn btn-danger">Eliminar producto</button></th>
+                    </tr>
+                }
+                </tbody>
+            </table>
+
+        </Body>
+</GenericList>

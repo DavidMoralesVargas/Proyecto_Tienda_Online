@@ -10,8 +10,7 @@ namespace Tienda_Online.Shared.Entidades
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public int CantidadProducto { get; set; } = 0!;
         [Display(Name = "Valor de Cantidad Producto")]
-        [Required(ErrorMessage = "El campo {0} es obligatorio")]
-        public double ValorCantidadProducto { get; set; } = 0!;
+        public double ValorCantidadProducto { get; set; }
 
         public int ProductoId { get; set; }
         [JsonIgnore]

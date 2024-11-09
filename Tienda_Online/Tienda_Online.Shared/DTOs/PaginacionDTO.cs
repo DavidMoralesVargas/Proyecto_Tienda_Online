@@ -5,6 +5,6 @@
         public int Id { get; set; }
         public int Pagina { get; set; } = 1;
         public int NumeroRegistros { get; set; } = 10;
-
+        public string? Filtro { get; set; }
     }
 }

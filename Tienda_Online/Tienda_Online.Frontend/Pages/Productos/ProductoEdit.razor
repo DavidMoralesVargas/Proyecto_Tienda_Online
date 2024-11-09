@@ -1,0 +1,13 @@
+﻿@page "/productos/editar/{Id:int}"
+
+<h1>Editar Producto</h1>
+
+@if(producto is null)
+{
+    <Loading/>
+}
+else
+{
+    <ProductosForm @ref="ProductoForm" producto="producto" OnValidSubmit="EditAsync" ReturnAction="Return" />
+
+}

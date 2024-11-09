@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35208.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tienda_Online.Backend", "Tienda_Online.Backend\Tienda_Online.Backend.csproj", "{39E16CF0-8B10-4C69-A188-23EC60FFB7F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tienda_Online.Backend", "Tienda_Online.Backend\Tienda_Online.Backend.csproj", "{39E16CF0-8B10-4C69-A188-23EC60FFB7F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tienda_Online.Frontend", "Tienda_Online.Frontend\Tienda_Online.Frontend.csproj", "{87678E1E-8458-45C2-B100-CA891E8F97FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tienda_Online.Frontend", "Tienda_Online.Frontend\Tienda_Online.Frontend.csproj", "{87678E1E-8458-45C2-B100-CA891E8F97FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tienda_Online.Shared", "Tienda_Online.Shared\Tienda_Online.Shared.csproj", "{A2A83805-95F9-4C59-9836-A76CED797F7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tienda_Online.Shared", "Tienda_Online.Shared\Tienda_Online.Shared.csproj", "{A2A83805-95F9-4C59-9836-A76CED797F7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
