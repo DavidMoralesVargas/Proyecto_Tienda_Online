@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection.Metadata.Ecma335;
 using Tienda_Online.Backend.Data;
 using Tienda_Online.Backend.Helpers;
 using Tienda_Online.Shared.DTOs;
@@ -41,11 +42,12 @@ namespace Tienda_Online.Backend.Clases
                     Respuesta = carrito
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new AccionRespuesta<CarritoDeCompra>
                 {
-                    Exitoso = false,
+                    Mensaje = ex.Message,
+                    Exitoso = false
                 };
             }
         }
@@ -57,6 +59,7 @@ namespace Tienda_Online.Backend.Clases
                                    on CC.ProductoId equals P.Id
                                    select new CarritoConProductoDTO
                                    {
+                                       IdCarrito = CC.Id,
                                        FotoProducto = P.Foto,
                                        NombreProducto = P.Nombre,
                                        PrecioTotal = CC.ValorCantidadProducto,
@@ -71,6 +74,97 @@ namespace Tienda_Online.Backend.Clases
 
 
             };
+        }
+
+        public async Task<AccionRespuesta<CarritoDeCompra>> Actualizar(CarritoDeCompra carritoDeCompra)
+        {
+            try
+            {
+                var producto = await _clsProducto.BuscarProducto(carritoDeCompra.ProductoId);
+                if (producto == null)
+                {
+                    return new AccionRespuesta<CarritoDeCompra>
+                    {
+                        Exitoso = false
+                    };
+                }
+                carritoDeCompra.ValorCantidadProducto = producto.Respuesta!.Precio * carritoDeCompra.CantidadProducto;
+                _context.Update(carritoDeCompra);
+                await _context.SaveChangesAsync();
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Exitoso = true,
+                    Respuesta = carritoDeCompra
+                };
+            }
+            catch(Exception ex)
+            {
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Mensaje = ex.Message,
+                    Exitoso = false
+                };
+            }
+        }
+
+        public async Task<AccionRespuesta<CarritoDeCompra>> BuscarCarritoCompra(int id)
+        {
+            try
+            {
+                var carrito = await _context.CarritosDeCompra.FirstOrDefaultAsync(c => c.Id == id);
+                if(carrito == null)
+                {
+                    return new AccionRespuesta<CarritoDeCompra>
+                    {
+                        Mensaje = "El carrito de compra no se encuentra en la base de datos",
+                        Exitoso = false
+                    };
+                }
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Exitoso = true,
+                    Respuesta = carrito
+                };
+            }
+            catch(Exception e)
+            {
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Mensaje = e.Message,
+                    Exitoso = false
+                };
+            }
+        }
+
+        public async Task<AccionRespuesta<CarritoDeCompra>> EliminarProducto(int id)
+        {
+            try
+            {
+                var carrito = await _context.CarritosDeCompra.FirstOrDefaultAsync(c => c.Id == id);
+                if(carrito == null)
+                {
+                    return new AccionRespuesta<CarritoDeCompra>
+                    {
+                        Mensaje = "Carrito no se encuentra en la base de datos",
+                        Exitoso = false
+                    };
+                }
+                _context.Remove(carrito);
+                await _context.SaveChangesAsync();
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Exitoso = true,
+                    Respuesta = carrito
+                };
+            }
+            catch(Exception e)
+            {
+                return new AccionRespuesta<CarritoDeCompra>
+                {
+                    Mensaje = e.Message,
+                    Exitoso = false
+                };
+            }
         }
     }
 }

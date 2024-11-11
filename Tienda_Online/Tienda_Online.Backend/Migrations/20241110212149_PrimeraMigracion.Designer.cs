@@ -12,7 +12,7 @@ using Tienda_Online.Backend.Data;
 namespace Tienda_Online.Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241109185717_PrimeraMigracion")]
+    [Migration("20241110212149_PrimeraMigracion")]
     partial class PrimeraMigracion
     {
         /// <inheritdoc />
@@ -141,6 +141,9 @@ namespace Tienda_Online.Backend.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double?>("PrecioAntiguo")
+                        .HasColumnType("float");
 
                     b.Property<double>("PrecioOferta")
                         .HasColumnType("float");

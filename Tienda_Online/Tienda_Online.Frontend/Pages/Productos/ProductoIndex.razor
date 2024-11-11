@@ -49,10 +49,10 @@
                             <p>@productos.Descripcion</p>
                         </div>
                         <div class="col-md-12 mb-3"> 
-                            <a href="/productos/editar/@productos.Id" class="btn btn-warning col-md-4">Editar</a>
+                            <a href="/productos/editar/@productos.Id" class="btn btn-warning col-md-4">Editar producto</a>
                         </div>
                         <div class="col-md-12">
-                            <button class="btn btn-danger col-md-4 mb-5" @onclick="@(()=>DeleteAsync(productos))">Eliminar</button>
+                            <button class="btn btn-danger col-md-4 mb-5" @onclick="@(()=>DeleteAsync(productos))">Eliminar producto</button>
                         </div>
                     </div>
                 }

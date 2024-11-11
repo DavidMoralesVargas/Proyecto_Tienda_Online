@@ -1,52 +1,35 @@
 using CurrieTechnologies.Razor.SweetAlert2;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Components.Routing;
-using Tienda_Online.Frontend.Repositories;
+using Microsoft.AspNetCore.Components;
 using Tienda_Online.Shared.Entidades;
+using Microsoft.AspNetCore.Components.Routing;
 
-namespace Tienda_Online.Frontend.Pages.Productos
+namespace Tienda_Online.Frontend.Pages.OfertasProducto
 {
-    public partial class ProductosForm
+    public partial class OfertaForm
     {
         private EditContext _editContext = null!;
 
         protected override void OnInitialized()
         {
-            _editContext = new(producto);
+            _editContext = new(oferta);
         }
 
-        [EditorRequired][Parameter] public Producto producto { get; set; } = null!;
+        [EditorRequired][Parameter] public PromocionProducto oferta { get; set; } = null!;
 
-        [EditorRequired] [Parameter] public EventCallback OnValidSubmit { get; set; }
+        [EditorRequired][Parameter] public EventCallback OnValidSubmit { get; set; }
 
-        [EditorRequired] [Parameter] public EventCallback ReturnAction { get; set; }
+        [EditorRequired][Parameter] public EventCallback ReturnAction { get; set; }
 
         [Inject] SweetAlertService sweetAlertService { get; set; } = null!;
 
         public bool FormPostedSuccessfully { get; set; } = false;
 
-
-        private async Task OnInputFileChange(InputFileChangeEventArgs e)
-        {
-            var file = e.File;
-
-            using (var stream = new MemoryStream())
-            {
-                await file.OpenReadStream().CopyToAsync(stream);
-                var base64 = Convert.ToBase64String(stream.ToArray());
-
-                // Aquí guardamos la cadena Base64 en el atributo Cronograma
-                producto.Foto = $"data:{file.ContentType};base64,{base64}";
-            }
-        }
-
-
         private async Task OnBeforeInternalNavigation(LocationChangingContext context)
         {
             var formWasEdited = _editContext.IsModified();
 
-            if(!formWasEdited || FormPostedSuccessfully)
+            if (!formWasEdited || FormPostedSuccessfully)
             {
                 return;
             }

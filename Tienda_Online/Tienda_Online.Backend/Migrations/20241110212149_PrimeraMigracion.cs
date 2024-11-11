@@ -88,7 +88,8 @@ namespace Tienda_Online.Backend.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PrecioOferta = table.Column<double>(type: "float", nullable: false),
-                    ProductoId = table.Column<int>(type: "int", nullable: false)
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
+                    PrecioAntiguo = table.Column<double>(type: "float", nullable: true)
                 },
                 constraints: table =>
                 {

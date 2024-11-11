@@ -96,12 +96,30 @@ namespace Tienda_Online.Backend.Clases
 
         public async Task<AccionRespuesta<Producto>> ActualizarProducto(Producto producto)
         {
+            try
+            {
+                if (string.IsNullOrEmpty(producto.Foto))
+                {
+                    var foto = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == producto.Id);
+                    producto.NombreFoto = foto!.NombreFoto;
+                    producto.Foto = foto.Foto;
+                    _context.Update(producto);
+                    await _context.SaveChangesAsync();
 
-            if (string.IsNullOrEmpty(producto.Foto))
+                    // Retornar el modelo guardado con la URL actualizada
+                    return new AccionRespuesta<Producto>
+                    {
+                        Exitoso = true,
+                        Respuesta = producto
+                    };
+                }
+            }
+            catch (Exception e)
             {
                 return new AccionRespuesta<Producto>
                 {
-                    Exitoso = false
+                    Exitoso = false,
+                    Mensaje = e.Message
                 };
             }
 
@@ -225,6 +243,30 @@ namespace Tienda_Online.Backend.Clases
             {
                 Exitoso = true
             };
+        }
+
+        public async Task<AccionRespuesta<Producto>> ActualizarPrecioOferta(Producto producto, double precio)
+        {
+            try
+            {
+                producto.Precio = precio;
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
+                return new AccionRespuesta<Producto>
+                {
+                    Exitoso = true,
+                    Respuesta = producto
+                };
+            }
+            catch(Exception e)
+            {
+                return new AccionRespuesta<Producto>
+                {
+                    Mensaje = e.Message,
+                    Exitoso = false
+                };
+            }
+            
         }
     }
 }

@@ -139,6 +139,9 @@ namespace Tienda_Online.Backend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double?>("PrecioAntiguo")
+                        .HasColumnType("float");
+
                     b.Property<double>("PrecioOferta")
                         .HasColumnType("float");
 

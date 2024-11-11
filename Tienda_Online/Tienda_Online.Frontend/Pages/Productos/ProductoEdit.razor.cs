@@ -32,11 +32,17 @@ namespace Tienda_Online.Frontend.Pages.Productos
             else
             {
                 producto = responseHttp.Response;
+                producto!.Foto = string.Empty;
             }
         }
 
         private async Task EditAsync()
         {
+            if (string.IsNullOrEmpty(producto!.Foto))
+            {
+                producto.Foto = "";
+                producto.NombreFoto = "";
+            }
             var responseHttp = await Repository.PutAsync("/api/productos/ActualizarProducto", producto);
             if (responseHttp.Error)
             {
@@ -50,7 +56,7 @@ namespace Tienda_Online.Frontend.Pages.Productos
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
+                Position = SweetAlertPosition.BottomLeft,
                 ShowConfirmButton = true,
                 Timer = 3000
             });

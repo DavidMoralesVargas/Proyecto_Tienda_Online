@@ -43,7 +43,7 @@ namespace Tienda_Online.Frontend.Pages.Comidas
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
+                Position = SweetAlertPosition.BottomLeft,
                 ShowConfirmButton = true,
                 Timer = 3000
             });

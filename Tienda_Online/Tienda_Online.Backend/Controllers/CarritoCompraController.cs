@@ -37,5 +37,38 @@ namespace Tienda_Online.Backend.Controllers
             }
             return BadRequest();
         }
+
+        [HttpPut("Actualizar")]
+        public async Task<IActionResult> Actualizar(CarritoDeCompra carrito)
+        {
+            var _carrito = await _carritoCompra.Actualizar(carrito);
+            if(_carrito.Exitoso)
+            {
+                return Ok(_carrito.Respuesta);
+            }
+            return BadRequest(_carrito.Mensaje);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> BuscarCarritoCompra(int id)
+        {
+            var _carrito = await _carritoCompra.BuscarCarritoCompra(id);
+            if (_carrito.Exitoso)
+            {
+                return Ok(_carrito.Respuesta);
+            }
+            return BadRequest(_carrito.Mensaje);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> EliminarProducto(int id)
+        {
+            var _carrito = await _carritoCompra.EliminarProducto(id);
+            if(_carrito.Exitoso)
+            {
+                return NoContent();
+            }
+            return BadRequest(_carrito.Mensaje);
+        }
     }
 }
