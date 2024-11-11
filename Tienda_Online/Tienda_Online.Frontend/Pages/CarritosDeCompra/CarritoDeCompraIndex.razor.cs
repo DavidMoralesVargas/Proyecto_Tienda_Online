@@ -1,9 +1,13 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Text;
+using Tienda_Online.Frontend.Pages.Facturas;
 using Tienda_Online.Frontend.Repositories;
 using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
+using Tienda_Online.Shared.Respuesta;
 
 namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
 {
@@ -12,9 +16,10 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-
+        public string Detalle { get; set; } = null!;
 
         public List<CarritoConProductoDTO>? CarritoConProducto { get; set; }
+        public DetalleFactura detalleFactura { get; set; } = null!;
 
         public int? TotalCompra = 0;
         protected async override Task OnInitializedAsync()
@@ -136,5 +141,88 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             IncrementarTotalAPagar();
         }
 
+        public async Task GenerarFactura(List<CarritoConProductoDTO> carritos)
+        {
+            var responseHttp = await Repository.PostAsync<List<CarritoConProductoDTO>, AccionRespuesta<string>>("/api/facturas/VerResumenFactura", carritos);
+            if(responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+            string resumen = responseHttp.Response!.Respuesta!;
+
+            var VentanaResumen = await SweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Resumende compra:",
+                Html = resumen,
+                ShowCancelButton = true,
+                Width = "800px",
+                ConfirmButtonText = "Confirmar pedido",
+                ConfirmButtonColor = "#0D6EFD"
+            });
+
+            var confirm = string.IsNullOrEmpty(VentanaResumen.Value);
+
+            if (confirm)
+            {
+                return;
+            }
+
+            var response = await Repository.PostAsync<List<CarritoConProductoDTO>, Factura>("/api/facturas/GenerarFactura", carritos);
+
+            if (response.Error)
+            {
+                var messageError = await response.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                return;
+            }
+
+            var ventanaConfirm = await SweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Gracias por su compra",
+                ShowCancelButton = true,
+                ConfirmButtonText = "Ver detalles",
+                ConfirmButtonColor = "#0D6EFD"
+            });
+
+            var confirm2 = string.IsNullOrEmpty(ventanaConfirm.Value);
+            
+
+            if (confirm2)
+            {
+                NavigationManager.NavigateTo("/");
+                return;
+            }
+
+            foreach(var carrito in carritos)
+            {
+                carrito.IdFactura = response.Response!.Id;
+            }
+
+            var DetallesFactura = await Repository.PostAsync<List<CarritoConProductoDTO>, AccionRespuesta<string>>("/api/facturas/MostrarFactura", carritos);
+            if (DetallesFactura.Error)
+            {
+                var error = await DetallesFactura.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", error, SweetAlertIcon.Error);
+                return;
+            }
+            Detalle = DetallesFactura.Response!.Respuesta!;
+            AbrirNuevaPestana(Detalle);
+            
+            
+        }
+
+        private void AbrirNuevaPestana(string resumen)
+        {
+            // Codificar el contenido en base64
+            var encodedHtml = Convert.ToBase64String(Encoding.UTF8.GetBytes(resumen));
+
+            // Construir la URL
+            var url = $"/resumen-factura/{encodedHtml}";
+
+            // Abrir la URL en una nueva pestaña
+            NavigationManager.NavigateTo(url, true);
+        }
     }
 }
