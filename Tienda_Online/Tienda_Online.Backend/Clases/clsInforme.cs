@@ -32,14 +32,14 @@ namespace Tienda_Online.Backend.Clases
                        
                         informe.CodigoProducto = producto.Respuesta.Id;
                         informe.CantidadPedidas = carrito.CantidadProductos;
-                        informe.GanaciasTotal = carrito.PrecioTotal * carrito.CantidadProductos;
+                        informe.GanaciasTotal = carrito.PrecioTotal;
                         _context.informesProducto.Add(informe);
                         await _context.SaveChangesAsync();
                     }
                     else
                     {
                         _informe.Respuesta!.CantidadPedidas += carrito.CantidadProductos;
-                        _informe.Respuesta!.GanaciasTotal += carrito.PrecioTotal * carrito.CantidadProductos;
+                        _informe.Respuesta!.GanaciasTotal += carrito.PrecioTotal;
                         _context.Update(_informe.Respuesta);
                         await _context.SaveChangesAsync();
                     }

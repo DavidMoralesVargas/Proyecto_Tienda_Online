@@ -63,7 +63,7 @@ namespace Tienda_Online.Backend.Clases
                 double iva = 1000, subtotal = 0, total = 0;
                 foreach(var carrito in carritos)
                 {
-                    subtotal += carrito.PrecioTotal * carrito.CantidadProductos;
+                    subtotal += carrito.PrecioTotal;
                 }
                 factura.Subtotal = subtotal;
                 factura.IVA = iva;
