@@ -28,6 +28,29 @@ namespace Tienda_Online.Backend.Controllers
             _mailHelper = mailHelper;
         }
 
+        [HttpGet("all")]
+        public async Task<IActionResult> ObtenerUsuarios([FromQuery] PaginacionDTO paginacion)
+        {
+            var usuarios = await _usuarios.GetAsync(paginacion);
+            if (usuarios.Exitoso)
+            {
+                return Ok(usuarios.Respuesta);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("totalPages")]
+        public async Task<IActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
+        {
+            var usuarios = await _usuarios.GetTotalPagesAsync(paginacion);
+            if (usuarios.Exitoso)
+            {
+                return Ok(usuarios.Respuesta);
+            }
+            return BadRequest();
+        }
+
+
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody]UserDTO model)
         {

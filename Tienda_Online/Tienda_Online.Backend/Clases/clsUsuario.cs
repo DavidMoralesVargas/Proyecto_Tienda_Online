@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Tienda_Online.Backend.Data;
+using Tienda_Online.Backend.Helpers;
 using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
+using Tienda_Online.Shared.Respuesta;
 
 namespace Tienda_Online.Backend.Clases
 {
@@ -19,6 +22,37 @@ namespace Tienda_Online.Backend.Clases
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+        }
+
+        public async Task<AccionRespuesta<IEnumerable<Usuario>>> GetAsync(PaginacionDTO paginacion)
+        {
+            var queryable = _context.Users.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(paginacion.Filtro))
+            {
+                queryable = queryable.Where(x=>x.Nombre.ToLower().Contains(paginacion.Filtro.ToLower()) || x.Apellido.ToLower().Contains(paginacion.Filtro));
+            }
+            return new AccionRespuesta<IEnumerable<Usuario>>
+            {
+                Exitoso = true,
+                Respuesta = await queryable.OrderBy(n => n.Nombre).Paginate(paginacion).ToListAsync()
+
+            };
+        }
+
+        public async Task<AccionRespuesta<int>> GetTotalPagesAsync(PaginacionDTO paginacion)
+        {
+            var queryable = _context.Users.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(paginacion.Filtro))
+            {
+                queryable = queryable.Where(x => x.Nombre.ToLower().Contains(paginacion.Filtro.ToLower()) || x.Apellido.ToLower().Contains(paginacion.Filtro));
+            }
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / paginacion.NumeroRegistros);
+            return new AccionRespuesta<int>
+            {
+                Exitoso = true,
+                Respuesta = (int)totalPages
+            };
         }
 
         public async Task<SignInResult> LoginAsync(LoginDTO model)
