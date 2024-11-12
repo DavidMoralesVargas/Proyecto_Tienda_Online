@@ -102,7 +102,7 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             }
             var producto = responseHttp.Response;
 
-            if(carrito.CantidadProductos > 1)
+            if (carrito.CantidadProductos > 1)
             {
                 producto!.CantidadProducto = producto.CantidadProducto - 1;
 
@@ -116,7 +116,7 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
                 await CargarDatos();
                 IncrementarTotalAPagar();
             }
-            
+
         }
 
         private async Task DeleteAsync(CarritoConProductoDTO carrito)
@@ -125,7 +125,7 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             var responseHttp = await Repository.DeleteAsync($"/api/carritoCompra/{carrito.IdCarrito}");
             if (responseHttp.Error)
             {
-                if(responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+                if (responseHttp.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     NavigationManager.NavigateTo("/");
                 }
@@ -144,7 +144,7 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
         public async Task GenerarFactura(List<CarritoConProductoDTO> carritos)
         {
             var responseHttp = await Repository.PostAsync<List<CarritoConProductoDTO>, AccionRespuesta<string>>("/api/facturas/VerResumenFactura", carritos);
-            if(responseHttp.Error)
+            if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
@@ -187,15 +187,17 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             });
 
             var confirm2 = string.IsNullOrEmpty(ventanaConfirm.Value);
-            
+
 
             if (confirm2)
             {
                 NavigationManager.NavigateTo("/");
+                await EliminarCarritos();
+                await ActualizarInformes(carritos);
                 return;
             }
 
-            foreach(var carrito in carritos)
+            foreach (var carrito in carritos)
             {
                 carrito.IdFactura = response.Response!.Id;
             }
@@ -209,8 +211,32 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             }
             Detalle = DetallesFactura.Response!.Respuesta!;
             AbrirNuevaPestana(Detalle);
-            
-            
+            await EliminarCarritos();
+            await ActualizarInformes(carritos);
+
+        } 
+
+
+        private async Task ActualizarInformes(List<CarritoConProductoDTO> carritos)
+        {
+            var responseHttp = await Repository.PostAsync<List<CarritoConProductoDTO>, AccionRespuesta<bool>>("/api/informes/GuardarInforme", carritos);
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message , SweetAlertIcon.Error);
+                return;
+            }
+        }
+
+        private async Task EliminarCarritos()
+        {
+            var responseHttp = await Repository.GetAsync("/api/carritoCompra/EliminarCarritos");
+            if (responseHttp.Error)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
         }
 
         private void AbrirNuevaPestana(string resumen)

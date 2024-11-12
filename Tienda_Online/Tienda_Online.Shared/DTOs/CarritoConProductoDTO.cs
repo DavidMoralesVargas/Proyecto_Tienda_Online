@@ -8,6 +8,5 @@
         public double PrecioTotal { get; set; } = 0!;
         public int CantidadProductos { get; set; } = 0!;
         public int IdFactura {  get; set; } 
-
     }
 }

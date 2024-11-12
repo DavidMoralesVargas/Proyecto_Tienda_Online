@@ -166,5 +166,18 @@ namespace Tienda_Online.Backend.Clases
                 };
             }
         }
+
+        public async Task<bool> EliminarRegistros()
+        {
+            try
+            {
+                await _context.Database.ExecuteSqlRawAsync("DELETE FROM CarritosDeCompra");
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

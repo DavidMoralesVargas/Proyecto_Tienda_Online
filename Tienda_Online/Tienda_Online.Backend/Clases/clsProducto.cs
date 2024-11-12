@@ -226,6 +226,22 @@ namespace Tienda_Online.Backend.Clases
             };
         }
 
+        public async Task<AccionRespuesta<Producto>> BuscarProductoPorNombre(string nombre)
+        {
+            var _producto = await _context.Productos.FirstOrDefaultAsync(p => p.Nombre == nombre);
+            if (_producto == null)
+            {
+                return new AccionRespuesta<Producto>
+                {
+                    Exitoso = false
+                };
+            }
+            return new AccionRespuesta<Producto>
+            {
+                Exitoso = true,
+                Respuesta = _producto
+            };
+        }
 
         public async Task<AccionRespuesta<object>> EliminarProducto(int id)
         {

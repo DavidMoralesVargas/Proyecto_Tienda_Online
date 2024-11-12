@@ -19,6 +19,7 @@ builder.Services.AddScoped<clsProducto>();
 builder.Services.AddScoped<clsPromocionProducto>();
 builder.Services.AddScoped<clsCarritoCompra>();
 builder.Services.AddScoped<clsFactura>();
+builder.Services.AddScoped<clsInforme>();
 
 var app = builder.Build();
 

@@ -70,5 +70,16 @@ namespace Tienda_Online.Backend.Controllers
             }
             return BadRequest(_carrito.Mensaje);
         }
+
+        [HttpGet("EliminarCarritos")]
+        public async Task<IActionResult> EliminarRegistros()
+        {
+            var resultado = await _carritoCompra.EliminarRegistros();
+            if (resultado)
+            {
+                return NoContent();
+            }
+            return BadRequest();
+        }
     }
 }
