@@ -25,5 +25,27 @@ namespace Tienda_Online.Backend.Controllers
             }
             return BadRequest(informe.Mensaje);
         }
+
+        [HttpGet("ObtenerTotalInformes")]
+        public async Task<IActionResult> ObtenerTotalInformes([FromQuery]PaginacionDTO paginacion)
+        {
+            var informes = await _informe.ObtenerTotalInformes(paginacion);
+            if(informes.Exitoso)
+            {
+                return Ok(informes.Respuesta);
+            }
+            return BadRequest(informes.Mensaje);
+        }
+
+        [HttpGet("ObtenerTotalPaginas")]
+        public async Task<IActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
+        {
+            var numeroPagInfomes = await _informe.ObtenerTotalPaginas(paginacion);
+            if (numeroPagInfomes.Exitoso)
+            {
+                return Ok(numeroPagInfomes.Respuesta);
+            }
+            return BadRequest(numeroPagInfomes.Mensaje);
+        }
     }
 }
