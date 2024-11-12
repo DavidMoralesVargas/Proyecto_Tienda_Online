@@ -75,9 +75,9 @@ namespace Tienda_Online.Backend.Controllers
         public async Task<IActionResult> EliminarRegistros()
         {
             var resultado = await _carritoCompra.EliminarRegistros();
-            if (resultado)
+            if (resultado.Exitoso)
             {
-                return NoContent();
+                return Ok(resultado);
             }
             return BadRequest();
         }

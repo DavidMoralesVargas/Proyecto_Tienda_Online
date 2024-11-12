@@ -214,7 +214,7 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             await EliminarCarritos();
             await ActualizarInformes(carritos);
 
-        } 
+        }
 
 
         private async Task ActualizarInformes(List<CarritoConProductoDTO> carritos)
@@ -223,14 +223,14 @@ namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message , SweetAlertIcon.Error);
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
         }
 
         private async Task EliminarCarritos()
         {
-            var responseHttp = await Repository.GetAsync("/api/carritoCompra/EliminarCarritos");
+            var responseHttp = await Repository.GetAsync<AccionRespuesta<bool>>("/api/carritoCompra/EliminarCarritos");
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();

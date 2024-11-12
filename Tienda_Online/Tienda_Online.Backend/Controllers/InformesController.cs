@@ -21,7 +21,7 @@ namespace Tienda_Online.Backend.Controllers
             var informe = await _informe.GuardarInforme(carritos);
             if (informe.Exitoso)
             {
-                return Ok(informe.Respuesta);
+                return Ok(informe);
             }
             return BadRequest(informe.Mensaje);
         }

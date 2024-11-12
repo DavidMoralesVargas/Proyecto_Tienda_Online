@@ -167,16 +167,24 @@ namespace Tienda_Online.Backend.Clases
             }
         }
 
-        public async Task<bool> EliminarRegistros()
+        public async Task<AccionRespuesta<bool>> EliminarRegistros()
         {
             try
             {
                 await _context.Database.ExecuteSqlRawAsync("DELETE FROM CarritosDeCompra");
-                return true;
+                return new AccionRespuesta<bool>
+                {
+                    Respuesta = true,
+                    Exitoso = true
+                };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return new AccionRespuesta<bool>
+                {
+                    Exitoso = false,
+                    Mensaje = ex.Message
+                };
             }
         }
     }
