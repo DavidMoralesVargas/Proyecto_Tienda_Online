@@ -46,6 +46,48 @@ namespace Tienda_Online.Backend.Controllers
             return BadRequest(result.Errors.FirstOrDefault());
         }
 
+        [HttpPost("RecoverPassword")]
+        public async Task<IActionResult> RecoverPassword([FromBody] EmailDTO model)
+        {
+            var user = await _usuarios.GetUserAsync(model.Email);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var myToken = await _usuarios.GeneratePasswordResetTokenAsync(user);
+            var tokenLink = Url.Action("ResetPassword", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
+            var response = _mailHelper.SendMail(user.Nombre, user.Email!,
+            $"Tienda_Online - Recuperación de contraseña",
+            $"<h1>Tienda_Onlie - Recuperación de contraseña</h1>" +
+            $"<p>Para recuperar su contraseña, por favor hacer clic 'Recuperar Contraseña':</p>" +
+            $"<b><a href ={tokenLink}>Recuperar Contraseña</a></b>");
+            if (response.Exitoso)
+            {
+                return NoContent();
+            }
+            return BadRequest(response.Mensaje);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordDTO model)
+        {
+            var user = await _usuarios.GetUserAsync(model.Email);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var result = await _usuarios.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+            {
+                return NoContent();
+            }
+            return BadRequest(result.Errors.FirstOrDefault());
+        }
+
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody]LoginDTO model)
         {

@@ -66,7 +66,7 @@ namespace Tienda_Online.Backend.Clases
 
         public async Task<Usuario> GetUserAsync(Guid userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x=>x.Id == userId.ToString());
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId.ToString());
             return user!;
         }
 
@@ -88,6 +88,16 @@ namespace Tienda_Online.Backend.Clases
         public async Task<IdentityResult> ConfirmEmailAsync(Usuario user, string token)
         {
             return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(Usuario user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(Usuario user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
         }
     }
 }
