@@ -12,17 +12,20 @@ namespace Tienda_Online.Backend.Controllers
     public class CarritoCompraController:ControllerBase
     {
         private clsCarritoCompra _carritoCompra;
+        private clsUsuario _usuario;
 
-        public CarritoCompraController(clsCarritoCompra carritoCompra)
+        public CarritoCompraController(clsCarritoCompra carritoCompra, clsUsuario usuario)
         {
             _carritoCompra = carritoCompra;
+            _usuario = usuario;
         }
 
 
         [HttpPost("CrearCarrito")]
         public async Task<IActionResult> CrearCarritoCompra(CarritoDeCompra carrito)
         {
-            var _carrito = await _carritoCompra.CrearCarritoCompra(carrito);
+            var user = await _usuario.GetUserAsync(User.Identity!.Name!);
+            var _carrito = await _carritoCompra.CrearCarritoCompra(carrito, user);
             if (_carrito.Exitoso)
             {
                 return Ok(_carrito.Respuesta);
@@ -33,7 +36,8 @@ namespace Tienda_Online.Backend.Controllers
         [HttpGet("ObtenerCarritos")]
         public async Task<IActionResult> ObtenerListaCarrito()
         {
-            var _carrito = await _carritoCompra.ObtenerListaCarrito();
+            var user = await _usuario.GetUserAsync(User.Identity!.Name!);
+            var _carrito = await _carritoCompra.ObtenerListaCarrito(user);
             if (_carrito.Exitoso)
             {
                 return Ok(_carrito.Respuesta);
@@ -77,7 +81,8 @@ namespace Tienda_Online.Backend.Controllers
         [HttpGet("EliminarCarritos")]
         public async Task<IActionResult> EliminarRegistros()
         {
-            var resultado = await _carritoCompra.EliminarRegistros();
+            var user = await _usuario.GetUserAsync(User.Identity!.Name!);
+            var resultado = await _carritoCompra.EliminarRegistros(user);
             if (resultado.Exitoso)
             {
                 return Ok(resultado);

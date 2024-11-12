@@ -48,6 +48,8 @@ namespace Tienda_Online.Backend.Data
                 };
                 await _usuarios.AddUserAsync(user, "123456");
                 await _usuarios.AddUserToRoleAsync(user, userType.ToString());
+                var token =  await _usuarios.GenerateEmailConfirmationTokenAsync(user);
+                await _usuarios.ConfirmEmailAsync(user, token);
             }
             return user;
         }

@@ -21,7 +21,7 @@ namespace Tienda_Online.Backend.Clases
             _clsProducto = clsProducto;
         }
 
-        public async Task<AccionRespuesta<CarritoDeCompra>> CrearCarritoCompra(CarritoDeCompra carrito)
+        public async Task<AccionRespuesta<CarritoDeCompra>> CrearCarritoCompra(CarritoDeCompra carrito, Usuario user)
         {
             try
             {
@@ -34,6 +34,7 @@ namespace Tienda_Online.Backend.Clases
                     };
                 }
                 carrito.ValorCantidadProducto = producto.Respuesta!.Precio * carrito.CantidadProducto;
+                carrito.usuario = user;
                 _context.Add(carrito);
                 await _context.SaveChangesAsync();
                 return new AccionRespuesta<CarritoDeCompra>
@@ -52,11 +53,12 @@ namespace Tienda_Online.Backend.Clases
             }
         }
 
-        public async Task<AccionRespuesta<IEnumerable<CarritoConProductoDTO>>> ObtenerListaCarrito()
+        public async Task<AccionRespuesta<IEnumerable<CarritoConProductoDTO>>> ObtenerListaCarrito(Usuario user)
         {
             var query = from CC in _context.Set<CarritoDeCompra>()
                                    join P in _context.Set<Producto>()
                                    on CC.ProductoId equals P.Id
+                                   where CC.usuario!.Email == user.Email
                                    select new CarritoConProductoDTO
                                    {
                                        IdCarrito = CC.Id,
@@ -167,11 +169,13 @@ namespace Tienda_Online.Backend.Clases
             }
         }
 
-        public async Task<AccionRespuesta<bool>> EliminarRegistros()
+        public async Task<AccionRespuesta<bool>> EliminarRegistros(Usuario user)
         {
             try
             {
-                await _context.Database.ExecuteSqlRawAsync("DELETE FROM CarritosDeCompra");
+                var registros = _context.CarritosDeCompra.Where(c => c.usuario!.Email == user.Email);
+                _context.CarritosDeCompra.RemoveRange(registros);
+                await _context.SaveChangesAsync();
                 return new AccionRespuesta<bool>
                 {
                     Respuesta = true,

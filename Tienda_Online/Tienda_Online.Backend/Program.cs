@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Tienda_Online.Backend.Clases;
 using Tienda_Online.Backend.Data;
+using Tienda_Online.Backend.Helpers;
 using Tienda_Online.Shared.Entidades;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,10 +28,12 @@ builder.Services.AddScoped<clsCarritoCompra>();
 builder.Services.AddScoped<clsFactura>();
 builder.Services.AddScoped<clsInforme>();
 builder.Services.AddScoped<clsUsuario>();
-
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
 {
+    x.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    x.SignIn.RequireConfirmedEmail = true;
     x.User.RequireUniqueEmail = false;
     x.Password.RequireDigit = false;
     x.Password.RequiredUniqueChars = 0;
@@ -38,6 +41,9 @@ builder.Services.AddIdentity<Usuario, IdentityRole>(x =>
     x.Password.RequireNonAlphanumeric = false;
     x.Password.RequireUppercase = false;
     x.Password.RequiredLength = 6;
+    x.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    x.Lockout.MaxFailedAccessAttempts = 5;
+    x.Lockout.AllowedForNewUsers = true;
 })
 .AddEntityFrameworkStores<DataContext>()
 .AddDefaultTokenProviders();

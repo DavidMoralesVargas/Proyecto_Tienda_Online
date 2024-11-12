@@ -15,5 +15,9 @@ namespace Tienda_Online.Shared.Entidades
         public int ProductoId { get; set; }
         [JsonIgnore]
         public Producto? Producto { get; set; }
+
+        public string? UsuarioId { get; set; }
+        [JsonIgnore]
+        public Usuario? usuario { get; set; }
     }
 }

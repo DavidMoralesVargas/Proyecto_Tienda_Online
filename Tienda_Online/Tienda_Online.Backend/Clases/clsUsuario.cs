@@ -23,7 +23,7 @@ namespace Tienda_Online.Backend.Clases
 
         public async Task<SignInResult> LoginAsync(LoginDTO model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
         }
 
         public async Task LogoutAsync()
@@ -78,6 +78,16 @@ namespace Tienda_Online.Backend.Clases
         public async Task<IdentityResult> UpdateUserAsync(Usuario user)
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(Usuario user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(Usuario user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
         }
     }
 }

@@ -169,12 +169,17 @@ namespace Tienda_Online.Backend.Migrations
                     b.Property<int>("ProductoId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<double>("ValorCantidadProducto")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductoId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("CarritosDeCompra");
                 });
@@ -432,7 +437,13 @@ namespace Tienda_Online.Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Tienda_Online.Shared.Entidades.Usuario", "usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId");
+
                     b.Navigation("Producto");
+
+                    b.Navigation("usuario");
                 });
 
             modelBuilder.Entity("Tienda_Online.Shared.Entidades.PromocionProducto", b =>

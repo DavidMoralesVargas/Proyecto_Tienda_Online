@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tienda_Online.Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class PrimeraMigracion : Migration
+    public partial class primeraMigracion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -218,11 +218,17 @@ namespace Tienda_Online.Backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CantidadProducto = table.Column<int>(type: "int", nullable: false),
                     ValorCantidadProducto = table.Column<double>(type: "float", nullable: false),
-                    ProductoId = table.Column<int>(type: "int", nullable: false)
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CarritosDeCompra", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CarritosDeCompra_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_CarritosDeCompra_Productos_ProductoId",
                         column: x => x.ProductoId,
@@ -295,6 +301,11 @@ namespace Tienda_Online.Backend.Migrations
                 name: "IX_CarritosDeCompra_ProductoId",
                 table: "CarritosDeCompra",
                 column: "ProductoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CarritosDeCompra_UsuarioId",
+                table: "CarritosDeCompra",
+                column: "UsuarioId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_Nombre",

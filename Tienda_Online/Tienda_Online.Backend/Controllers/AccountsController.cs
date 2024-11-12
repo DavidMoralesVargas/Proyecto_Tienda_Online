@@ -6,9 +6,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Tienda_Online.Backend.Clases;
+using Tienda_Online.Backend.Helpers;
 using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
-using Tienda_Online.Shared.Enums;
+using Tienda_Online.Shared.Respuesta;
 
 namespace Tienda_Online.Backend.Controllers
 {
@@ -18,11 +19,13 @@ namespace Tienda_Online.Backend.Controllers
     {
         private readonly clsUsuario _usuarios;
         private readonly IConfiguration _configuration;
+        private readonly IMailHelper _mailHelper;
 
-        public AccountsController(clsUsuario usuarios, IConfiguration configuration)
+        public AccountsController(clsUsuario usuarios, IConfiguration configuration, IMailHelper mailHelper)
         {
             _usuarios = usuarios;
             _configuration = configuration;
+            _mailHelper = mailHelper;
         }
 
         [HttpPost("CreateUser")]
@@ -33,7 +36,12 @@ namespace Tienda_Online.Backend.Controllers
             if(result.Succeeded)
             {
                 await _usuarios.AddUserToRoleAsync(user, user.userType.ToString());
-                return Ok(BuildToken(user));
+                var response = await SendConfirmationEmailAsync(user);
+                if (response.Exitoso)
+                {
+                    return NoContent();
+                }
+                return BadRequest(response.Mensaje);
             }
             return BadRequest(result.Errors.FirstOrDefault());
         }
@@ -46,6 +54,14 @@ namespace Tienda_Online.Backend.Controllers
             {
                 var user = await _usuarios.GetUserAsync(model.Email);
                 return Ok(BuildToken(user));
+            }
+            if (result.IsLockedOut)
+            {
+                return BadRequest("Ha superado el maximo número de intentos. su cuenta está bloqueada, intente de nuevo en 5 minutos");
+            }
+            if (result.IsNotAllowed)
+            {
+                return BadRequest("El usuario no ha sido habilitado, debes de seguir las instrucciones del correo enviado para poder habilitar el usuario");
             }
             return BadRequest("Email o contraseña incorrectos");
         }
@@ -135,6 +151,54 @@ namespace Tienda_Online.Backend.Controllers
                 return BadRequest(result.Errors.FirstOrDefault()!.Description);
             }
             return NoContent();
+        }
+
+        private async Task<AccionRespuesta<string>> SendConfirmationEmailAsync(Usuario user)
+        {
+            var myToken = await _usuarios.GenerateEmailConfirmationTokenAsync(user);
+            var tokenLink = Url.Action("ConfirmEmail", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
+            return _mailHelper.SendMail(user.Nombre, user.Email!,
+            $"Tienda_Online - Confirmación de cuenta",
+            $"<h1>Tienda_Online - Confirmación de cuenta</h1>" +
+            $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+            $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+        }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmailAsync(string userId, string token)
+        {
+            token = token.Replace(" ", "+");
+            var user = await _usuarios.GetUserAsync(new Guid(userId));
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var result = await _usuarios.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+            return NoContent();
+        }
+
+        [HttpPost("ResendToken")]
+        public async Task<IActionResult> ResedTokenAsync([FromBody] EmailDTO model)
+        {
+            var user = await _usuarios.GetUserAsync(model.Email);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            var response = await SendConfirmationEmailAsync(user);
+            if(response.Exitoso)
+            {
+                return NoContent();
+            }
+            return BadRequest(response.Mensaje);
         }
     }
 }
