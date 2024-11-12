@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
 using Tienda_Online.Backend.Clases;
 using Tienda_Online.Shared.DTOs;
@@ -8,6 +10,7 @@ namespace Tienda_Online.Backend.Controllers
 {
     [ApiController]
     [Route("/api/promociones")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PromocionProductoController : ControllerBase
     {
         private readonly clsPromocionProducto _promocion;

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tienda_Online.Backend.Clases;
 using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
@@ -7,6 +9,7 @@ namespace Tienda_Online.Backend.Controllers
 {
     [ApiController]
     [Route("/api/facturas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class FacturaController : ControllerBase
     {
 

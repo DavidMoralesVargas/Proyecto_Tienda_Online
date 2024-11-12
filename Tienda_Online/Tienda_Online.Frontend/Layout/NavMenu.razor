@@ -9,16 +9,23 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="usuarios" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Usuarios
-            </NavLink>
-        </div>
+        <AuthorizeView Roles="Administrador">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrador">
+
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrador">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="usuarios" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Usuarios
+                </NavLink>
+            </div>
+        </AuthorizeView>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="ofertas" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Ofertas
@@ -29,16 +36,21 @@
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Comidas
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="productos" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Gestionar Productos
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="informes" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Informes de productos
-            </NavLink>
-        </div>
+        <AuthorizeView Roles="Administrador">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="productos" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Gestionar Productos
+                </NavLink>
+            </div>
+        </AuthorizeView>
+        <AuthorizeView Roles="Administrador">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="informes" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Informes de productos
+                </NavLink>
+            </div>
+        </AuthorizeView>
+       
 
     </nav>
 </div>

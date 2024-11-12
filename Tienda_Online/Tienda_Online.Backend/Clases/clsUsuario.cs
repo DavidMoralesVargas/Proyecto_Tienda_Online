@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tienda_Online.Backend.Data;
+using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
 
 namespace Tienda_Online.Backend.Clases
@@ -10,12 +11,24 @@ namespace Tienda_Online.Backend.Clases
         private readonly DataContext _context;
         private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<Usuario> _signInManager;
 
-        public clsUsuario(DataContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
+        public clsUsuario(DataContext context, UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager, SignInManager<Usuario> signInManager)
         {
             _context = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
+        }
+
+        public async Task<SignInResult> LoginAsync(LoginDTO model)
+        {
+            return await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
+        }
+
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
 
         public async Task<IdentityResult> AddUserAsync(Usuario user, string password)
@@ -50,5 +63,7 @@ namespace Tienda_Online.Backend.Clases
         {
             return await _userManager.IsInRoleAsync(user, roleName);
         }
+
+
     }
 }
