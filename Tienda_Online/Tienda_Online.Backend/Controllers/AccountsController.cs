@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,6 +8,7 @@ using System.Text;
 using Tienda_Online.Backend.Clases;
 using Tienda_Online.Shared.DTOs;
 using Tienda_Online.Shared.Entidades;
+using Tienda_Online.Shared.Enums;
 
 namespace Tienda_Online.Backend.Controllers
 {
@@ -72,6 +75,66 @@ namespace Tienda_Online.Backend.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration
             };
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PutAsync(Usuario user)
+        {
+            try
+            {
+                var currentUser = await _usuarios.GetUserAsync(User.Identity!.Name!);
+                if(currentUser == null)
+                {
+                    return NotFound();
+                }
+
+                currentUser.Nombre = user.Nombre;
+                currentUser.Apellido = user.Apellido;
+                currentUser.Direccion = user.Direccion;
+                currentUser.FechaNacimiento = user.FechaNacimiento;
+                currentUser.PhoneNumber = user.PhoneNumber;
+
+                var result = await _usuarios.UpdateUserAsync(currentUser);
+                if(result.Succeeded)
+                {
+                    return NoContent();
+                }
+                return BadRequest(result.Errors.FirstOrDefault());
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetAsync()
+        {
+            return Ok(await _usuarios.GetUserAsync(User.Identity!.Name!));
+        }
+
+        [HttpPost("changePassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var user = await _usuarios.GetUserAsync(User.Identity!.Name!);
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _usuarios.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors.FirstOrDefault()!.Description);
+            }
+            return NoContent();
         }
     }
 }

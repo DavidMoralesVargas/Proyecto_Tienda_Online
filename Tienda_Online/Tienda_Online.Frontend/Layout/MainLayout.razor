@@ -5,22 +5,24 @@
     </div>
 
     <main>
-        
+
         <AuthorizeView>
             <Authorized>
                 <div class="top-row px-4">
                     <div>
                         <a href="/carritocompra" style="margin-right: 3rem">Carrito de Compra</a>
                     </div>
-                    
-                    <span>Hola, @context.User.Identity!.Name</span>
+
+                    <span class="d-flex align-items-center">
+                        Hola, <a href="EditUser" class="nav-link btn btn-link">@context.User.Identity!.Name</a>
+                    </span>
                     <a href="Logout" class="nav-link btn btn-linl">Cerrar sesión</a>
                 </div>
-                
+
             </Authorized>
             <NotAuthorized>
                 <div class="top-row px-4">
-                    <a  class="mr-3">Carrito de Compra</a>
+                    <a class="mr-3">Carrito de Compra</a>
                     <a href="Register">Registro</a>
                     <a href="Login">Iniciar Sesión</a>
                 </div>

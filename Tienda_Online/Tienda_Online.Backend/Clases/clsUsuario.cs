@@ -64,6 +64,20 @@ namespace Tienda_Online.Backend.Clases
             return await _userManager.IsInRoleAsync(user, roleName);
         }
 
+        public async Task<Usuario> GetUserAsync(Guid userId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x=>x.Id == userId.ToString());
+            return user!;
+        }
 
+        public async Task<IdentityResult> ChangePasswordAsync(Usuario user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<IdentityResult> UpdateUserAsync(Usuario user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
     }
 }
