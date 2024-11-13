@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Tienda_Online.Frontend.Repositories;
 using Tienda_Online.Shared.DTOs;
@@ -151,7 +152,9 @@ namespace Tienda_Online.Frontend.Pages.OfertasProducto
                 Toast = true,
                 Position = SweetAlertPosition.BottomLeft,
                 ShowConfirmButton = true,
-                Timer = 3000
+                Timer = 3000,
+                ConfirmButtonColor = "#0047FF",
+                CancelButtonText = "Cancelar"
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }

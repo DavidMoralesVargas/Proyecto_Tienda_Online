@@ -1,7 +1,6 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Tienda_Online.Frontend.Pages.Facturas;
 using Tienda_Online.Frontend.Repositories;
@@ -11,6 +10,7 @@ using Tienda_Online.Shared.Respuesta;
 
 namespace Tienda_Online.Frontend.Pages.CarritosDeCompra
 {
+    [Authorize(Roles = "Administrador, Supervisor, AsesorComercial, Cliente")]
     public partial class CarritoDeCompraIndex
     {
         [Inject] private IRepository Repository { get; set; } = null!;

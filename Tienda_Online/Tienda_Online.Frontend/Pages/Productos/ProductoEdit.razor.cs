@@ -1,10 +1,13 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using System.Data;
 using Tienda_Online.Frontend.Repositories;
 using Tienda_Online.Shared.Entidades;
 
 namespace Tienda_Online.Frontend.Pages.Productos
 {
+    [Authorize(Roles = "Administrador, Supervisor, AsesorComercial")]
     public partial class ProductoEdit
     {
         private Producto? producto { get; set; }

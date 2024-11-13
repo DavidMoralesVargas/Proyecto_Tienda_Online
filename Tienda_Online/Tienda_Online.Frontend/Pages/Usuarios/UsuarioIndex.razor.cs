@@ -1,10 +1,12 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Tienda_Online.Frontend.Repositories;
 using Tienda_Online.Shared.Entidades;
 
 namespace Tienda_Online.Frontend.Pages.Usuarios
 {
+    [Authorize(Roles = "Administrador, Supervisor")]
     public partial class UsuarioIndex
     {
         public List<Usuario>? Usuarios { get; set; }

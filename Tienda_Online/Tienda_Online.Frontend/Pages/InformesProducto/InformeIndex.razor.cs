@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Tienda_Online.Frontend.Repositories;
 using Tienda_Online.Shared.DTOs;
@@ -6,6 +7,7 @@ using Tienda_Online.Shared.Entidades;
 
 namespace Tienda_Online.Frontend.Pages.InformesProducto
 {
+    [Authorize(Roles = "Administrador, Supervisor")]
     public partial class InformeIndex
     {
         private int currentPage = 1;

@@ -20,6 +20,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet("ObtenerListaPromocion")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerListaPromocionProducto([FromQuery] PaginacionDTO paginacion)
         {
             var promociones = await _promocion.ObtenerListaPromocionProducto(paginacion);
@@ -31,6 +32,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet("ObtenerTotalPaginas")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
         {
             var promociones = await _promocion.ObtenerTotalPaginas(paginacion);

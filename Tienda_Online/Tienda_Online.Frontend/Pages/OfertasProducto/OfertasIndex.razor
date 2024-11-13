@@ -27,27 +27,39 @@
             <div class="row">
                 @foreach (var oferta in Ofertas!)
                 {
-                    <div class="col-md-3">
-                        <div class="col-md-12">
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                        <div class="col-md-12 d-flex flex-column align-items-center">
                             <img style="width: 100px; height: 100px;"
                                  src="@oferta.FotoProducto"
-                                 class="img-fluid" />
+                                 class="img-fluid mb-2" />
+
+                            <p style="color: blue; text-decoration: line-through; text-align: center;">
+                                $@oferta.PrecioAntiguo
+                            </p>
+                            <p style="color: blue; text-align: center;">
+                                $@oferta.PrecioOferta
+                            </p>
+                            <p style="text-align: center;">
+                                @oferta.DescripcionProducto
+                            </p>
                         </div>
-                        <div class="col-md-12">
-                            <p>@oferta.PrecioAntiguo</p>
-                        </div>
-                        <div class="col-md-12">
-                            <p>@oferta.PrecioOferta</p>
-                        </div>
-                        <div class="col-md-12">
-                            <p>@oferta.DescripcionProducto</p>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-primary col-md-4 mb-2" style="background-color:#0D6EFD" @onclick="@(()=>IngresarCarritoCompra(oferta.IdProducto))">Añadir al carrito</button>
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-danger col-md-4 mb-5" @onclick="@(()=>DeleteAsyc(oferta))">Eliminar Oferta</button>
-                        </div>
+                        <AuthorizeView>
+                            <div class="col-md-12 mb-2 d-flex justify-content-center">
+                                <button class="btn btn-primary" style="width: 140px; font-size: 0.85rem; background-color:#0D6EFD;"
+                                        @onclick="@(()=>IngresarCarritoCompra(oferta.IdProducto))">
+                                    Añadir al carrito
+                                </button>
+                            </div>
+                        </AuthorizeView>
+                        
+                        <AuthorizeView Roles="Administrador, Supervisor, AsesorComercial">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                <button class="btn btn-danger" style="width: 140px; font-size: 0.85rem;"
+                                        @onclick="@(()=>DeleteAsyc(oferta))">
+                                    Eliminar Oferta
+                                </button>
+                            </div>
+                        </AuthorizeView>
                     </div>
                 }
             </div>

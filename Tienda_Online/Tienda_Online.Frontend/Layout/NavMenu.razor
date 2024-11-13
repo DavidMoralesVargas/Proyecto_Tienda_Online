@@ -10,38 +10,38 @@
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All" style="color: black;">
+                <img src="/ImagenCasa-transformed.png" style="width: 30px; height: 30px;" /> Inicio
             </NavLink>
         </div>
-        <AuthorizeView Roles="Administrador">
+        <AuthorizeView Roles="Administrador, Supervisor">
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="usuarios" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Usuarios
+                <NavLink class="nav-link" href="usuarios" Match="NavLinkMatch.All" style="color: black;">
+                    <img src="/ImagenUsuarios-transformed.png" style="width: 30px; height: 30px;"> Usuarios
                 </NavLink>
             </div>
         </AuthorizeView>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="ofertas" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Ofertas
+            <NavLink class="nav-link" href="ofertas" Match="NavLinkMatch.All" style="color: black;">
+                <img src="/ImagenOferta-transformed.png" style="width: 30px; height: 30px;" /> Ofertas
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="comidas" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Comidas
+            <NavLink class="nav-link" href="comidas" Match="NavLinkMatch.All" style="color: black;">
+                <img src="/ImagenComida-transformed.png" style="width: 30px; height: 30px;" /> Comidas
             </NavLink>
         </div>
-        <AuthorizeView Roles="Administrador">
+        <AuthorizeView Roles="Administrador, Supervisor, AsesorComercial">
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="productos" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Gestionar Productos
+                <NavLink class="nav-link" href="productos" Match="NavLinkMatch.All" style="color: black;">
+                    <img src="/ImagenGestionProd-transformed.png" style="width: 30px; height: 30px;" /> Gestionar Productos
                 </NavLink>
             </div>
         </AuthorizeView>
-        <AuthorizeView Roles="Administrador">
+        <AuthorizeView Roles="Administrador, Supervisor">
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="informes" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Informes de productos
+                <NavLink class="nav-link" href="informes" Match="NavLinkMatch.All" style="color: black;">
+                    <img src="/ImagenInformes-transformed.png" style="width: 30px; height: 30px;" /> Informes de productos
                 </NavLink>
             </div>
         </AuthorizeView>

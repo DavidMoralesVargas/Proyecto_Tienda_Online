@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Text;
 
 namespace Tienda_Online.Frontend.Pages.Facturas
 {
+    [Authorize(Roles = "Administrador, Supervisor, AsesorComercial, Cliente")]
     public partial class DetalleFactura
     {
         [Parameter]

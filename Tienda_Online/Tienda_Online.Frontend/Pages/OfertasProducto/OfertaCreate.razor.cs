@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Tienda_Online.Frontend.Pages.Productos;
 using Tienda_Online.Frontend.Repositories;

@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System.Numerics;
 using Tienda_Online.Frontend.Repositories;
@@ -6,6 +7,7 @@ using Tienda_Online.Shared.Entidades;
 
 namespace Tienda_Online.Frontend.Pages.Productos
 {
+    [Authorize(Roles ="Administrador, Supervisor, AsesorComercial")]
     public partial class ProductoIndex
     {
         private int currentPage = 1;
@@ -131,7 +133,9 @@ namespace Tienda_Online.Frontend.Pages.Productos
                 Toast = true,
                 Position = SweetAlertPosition.BottomEnd,
                 ShowConfirmButton = true,
-                Timer = 3000
+                Timer = 3000,
+                ConfirmButtonColor = "#0047FF",
+                CancelButtonText = "Cancelar"
             });
             await toast.FireAsync(icon:SweetAlertIcon.Success, message:"Registro borrado con éxito.");
         }

@@ -31,6 +31,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerListaProducto([FromQuery] PaginacionDTO paginacion)
         {
             var _productos = await _clsProducto.ObtenerListaProducto(paginacion);
@@ -42,6 +43,7 @@ namespace Tienda_Online.Backend.Controllers
         }
 
         [HttpGet("ObtenerTotalPaginas")]
+        [AllowAnonymous]
         public async Task<IActionResult> ObtenerTotalPaginas([FromQuery] PaginacionDTO paginacion)
         {
             var _paginas = await _clsProducto.ObtenerTotalPaginas(paginacion);
