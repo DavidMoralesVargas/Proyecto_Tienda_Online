@@ -1,19 +1,19 @@
 # Proyecto_Tienda_Online
 Proyecto de Diseño de Sistemas de Información
 
-Descripción:
+**Descripción:**
 Este proyecto consiste en el desarrollo de una plataforma de tienda online enfocada en la venta de productos de comida.
 El sistema permite gestionar productos, promociones y usuarios, además de generar reportes sobre los productos más consumidos dentro del sistema, apoyando la toma de decisiones.
 
 
-Objetivos:
+**Objetivos:**
 - Permitir la compra de productos de comida de forma rápida y sencilla
 - Gestionar productos y promociones
 - Generar reportes de productos más consumidos
 - Administrar usuarios con diferentes roles
 
 
-Roles del Sistema: 
+**Roles del Sistema:** 
 
 1. Cliente
    - Visualizar productos
@@ -35,7 +35,8 @@ Roles del Sistema:
    - Crear promociones
 
 
-Arquitectura (Cliente-Servidor):
+
+**Arquitectura (Cliente-Servidor):**
 
 Frontend: Interfaz de usuario
 Backend: Lógica de negocio
@@ -44,9 +45,24 @@ Cloudinary: Almacenamiento de fotos para los productos
 
 
 
-Tecnologías:
+
+**Tecnologías**:
 
 Lenguaje: C#, HTML, CSS
 Framework: ASP.NET Core, Blazor Web Assembly
 Base de datos: SQL Server
 Herramientas: Cloudinary
+
+
+
+**Diagrama de Dominio:**
+
+<img src="DiagramaDominio(1).png" alt="Imagen_Modelo_Dominio" width="600" />
+
+
+**Diagramas de casos de uso:**
+
+<img src="CarritoCompra.png" alt="Caso de Uso Carrito" width="600" /><br>
+<img src="Facturación.png" alt="Caso de Uso Facturación" width="600" /><br>
+<img src="GestionDeProducto.png" alt="Caso de Uso Gestión Productos" width="600" /><br>
+<img src="GestionDeUsuarios.png" alt="Caso de Uso Gestión Usuarios" width="600" /><br>
